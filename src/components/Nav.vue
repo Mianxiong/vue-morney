@@ -26,14 +26,6 @@ import Icon from "@/components/Icon.vue";
 // 这两个symbol外面套一个svg
 // 第三步把这个svg放到body里面
 
-//将一个目录里面任意后缀的文件统一全部引入到当前文件
-let importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
-  requireContext.keys().forEach(requireContext);
-try {
-  importAll(require.context("../assets/icons/", true, /\.svg$/));
-} catch (error) {
-  console.log(error);
-}
 export default {
   name: "Nav",
 };
