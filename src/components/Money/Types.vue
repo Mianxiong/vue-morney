@@ -7,25 +7,35 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator';
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class Types extends Vue {
-  type = '-' // '-'表示支出，'+'表示收入
+  type = "-"; // '-'表示支出，'+'表示收入
   selectType(type: string) {
-    if(type !== '-' && type!== '+') {
-      throw new Error('type is unknown')
+    if (type !== "-" && type !== "+") {
+      throw new Error("type is unknown");
     }
-    this.type = type
+    this.type = type;
   }
+  
 }
+// @Prop(Number) xxx: number | undefined;
+// mounted(){
+//     if(this.xxx === undefined) {
+//       console.log('undefined')
+//     } else {
+//       console.log(this.xxx.toString())
+//     }
+//     console.log(this.xxx)
+//   }
 // export default {
 //   name: "Types",
 //   props: ['x'],
 //   data() {
 //     return {
-//       type: '-' 
+//       type: '-'
 //     }
 //   },
 //   methods: {
@@ -63,3 +73,5 @@ export default class Types extends Vue {
   }
 }
 </style>
+
+
