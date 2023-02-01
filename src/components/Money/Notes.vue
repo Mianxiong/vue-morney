@@ -7,14 +7,18 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Notes extends Vue {
-  value = '';
+  value = "";
+  @Watch("value")
+  onValueChanged(value: string, oldValue: string) {
+    this.$emit('update:value',value)
+  }
   onInput(event: KeyboardEvent) {
-    const input = event.target as HTMLInputElement
-    this.value = input.value
+    const input = event.target as HTMLInputElement;
+    this.value = input.value;
   }
 }
 </script>
