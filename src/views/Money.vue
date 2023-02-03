@@ -5,9 +5,13 @@
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
     <div class="notes">
-      <FormItem field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes" />
+      <FormItem
+        field-name="备注"
+        placeholder="在这里输入备注"
+        @update:value="onUpdateNotes"
+      />
     </div>
-    
+
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
   </Layout>
 </template>
@@ -18,12 +22,12 @@ import Types from "@/components/Money/Types.vue";
 import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import recordListModel from '@/models/recordListModel'
-import tagListModel from '@/models/tagListModel'
+import recordListModel from "@/models/recordListModel";
+import tagListModel from "@/models/tagListModel";
 
 const version = window.localStorage.getItem("version") || "0";
-const recordList = recordListModel.fetch()
-const tagList = tagListModel.fetch()
+const recordList = recordListModel.fetch();
+const tagList = tagListModel.fetch();
 
 if (version === "0.0.1") {
   //数据库升级，数据迁移
@@ -62,13 +66,11 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() {
-    const record2: RecordItem = recordListModel.clone(this.record); // 深拷贝
-    record2.createdAt = new Date();
-    this.recordList.push(record2);
+    recordListModel.create(this.record);
   }
   @Watch("recordList")
   onRecordListChange() {
-    recordListModel.save(this.recordList)
+    recordListModel.save();
   }
   // onUpdateType(value: string) {
   //   this.record.type = value
