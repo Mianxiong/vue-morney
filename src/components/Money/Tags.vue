@@ -5,12 +5,12 @@
     </div>
     <ul class="current">
       <li
-        v-for="(tag,index) in dataSource"
-        :key="index"
+        v-for="tag in dataSource"
+        :key="tag.id"
         @click="toggle(tag)"
         :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
       >
-        {{ tag }}
+        {{ tag.name }}
       </li>
     </ul>
   </div>
@@ -29,7 +29,7 @@ export default class extends Vue {
     } else {
       this.selectedTags.push(tag);
     }
-    this.$emit('update:value',this.selectedTags)
+    this.$emit("update:value", this.selectedTags);
   }
   create() {
     const name = window.prompt("请输入标签名");
