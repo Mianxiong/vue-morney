@@ -7,7 +7,7 @@
     </div>
     <div class="form-wrapper">
       <FormItem
-        :value="tag.name"
+        :value="currentTag.name"
         @update:value="update"
         field-name="标签名"
         placeholder="请输入标签名"
@@ -32,7 +32,7 @@ import Button from "@/components/Button.vue";
 })
 export default class EditLabel extends Vue {
   // tag?: Tag = undefined;
-  get tag() {
+  get currentTag() {
     return this.$store.state.currentTag;
   }
   created() {
@@ -40,22 +40,22 @@ export default class EditLabel extends Vue {
     this.$store.commit("fetchTags");
     this.$store.commit("setCurrentTag", id);
     // this.tag = store.findTag(this.$route.params.id);
-    if (!this.tag) {
+    if (!this.currentTag) {
       this.$router.replace("/404");
     }
   }
   update(name: string) {
-    if (this.tag) {
+    if (this.currentTag) {
       this.$store.commit("updateTag", {
-        id: this.tag.id,
+        id: this.currentTag.id,
         name,
       });
       // store.updateTag(this.tag.id, name);
     }
   }
   remove() {
-    if (this.tag) {
-      this.$store.commit("removeTag", this.tag.id);
+    if (this.currentTag) {
+      this.$store.commit("removeTag", this.currentTag.id);
       // if (store.removeTag(this.tag.id)) {
       //   this.$router.back();
       // } else {
