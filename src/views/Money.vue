@@ -21,21 +21,19 @@ import NumberPad from "@/components/Money/NumberPad.vue";
 import Types from "@/components/Money/Types.vue";
 import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
-import { Component, Vue, Watch } from "vue-property-decorator";
-import recordListModel from "@/models/recordListModel";
-import tagListModel from "@/models/tagListModel";
+import { Component, Vue } from "vue-property-decorator";
 
 const version = window.localStorage.getItem("version") || "0";
-const recordList = recordListModel.fetch();
+// const recordList = recordListModel.fetch();
 // const tagList = tagListModel.fetch();
 
 if (version === "0.0.1") {
   //数据库升级，数据迁移
-  recordList.forEach((record) => {
+  window.recordList.forEach((record) => {
     record.createdAt = new Date(0);
   });
   //保存数据
-  window.localStorage.setItem("recordList", JSON.stringify(recordList));
+  window.localStorage.setItem("recordList", JSON.stringify(window.recordList));
 }
 window.localStorage.setItem("version", "0.0.2");
 
@@ -52,7 +50,7 @@ window.localStorage.setItem("version", "0.0.2");
 })
 export default class Money extends Vue {
   tags = window.tagList;
-  recordList: RecordItem[] = recordList;
+  recordList = window.recordList;
   record: RecordItem = {
     tags: [],
     notes: "",
@@ -66,12 +64,12 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() {
-    recordListModel.create(this.record);
+    window.createRecord(this.record);
   }
-  @Watch("recordList")
-  onRecordListChange() {
-    recordListModel.save();
-  }
+  // @Watch("recordList")
+  // onRecordListChange() {
+  //   recordListModel.save();
+  // }
   // onUpdateType(value: string) {
   //   this.record.type = value
   // }
