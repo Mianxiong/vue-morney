@@ -27,7 +27,7 @@ import tagListModel from "@/models/tagListModel";
 
 const version = window.localStorage.getItem("version") || "0";
 const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
+// const tagList = tagListModel.fetch();
 
 if (version === "0.0.1") {
   //数据库升级，数据迁移
@@ -51,7 +51,7 @@ window.localStorage.setItem("version", "0.0.2");
   components: { NumberPad, Types, FormItem, Tags },
 })
 export default class Money extends Vue {
-  tags = tagList;
+  tags = window.tagList;
   recordList: RecordItem[] = recordList;
   record: RecordItem = {
     tags: [],
