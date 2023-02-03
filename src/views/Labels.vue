@@ -22,6 +22,8 @@ import Icon from "@/components/Icon.vue";
 import tagListModel from "@/models/tagListModel";
 import { Component, Vue } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
+import { mixins } from "vue-class-component";
+import TagHelper from "@/mixins/TagHelper";
 
 // tagListModel.fetch();
 @Component({
@@ -32,16 +34,9 @@ import Button from "@/components/Button.vue";
     }
   }
 })
-export default class extends Vue {
+export default class extends mixins(TagHelper) {
   created() {
     this.$store.commit('fetchTags');
-  }
-  createTag() {
-    const name = window.prompt("请输入标签名");
-    if (!name) {
-      return window.alert("标签名不能为空");
-    }
-    this.$store.commit("createTag", name);
   }
 }
 </script>
