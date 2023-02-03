@@ -3,7 +3,11 @@ import tagStore from "./tagStore";
 
 const store = {
   ...recordStore,
-  ...tagStore
+  ...tagStore,
+  count: 0,
+  addCount() {
+    this.count += 1;
+  }
   
 };
 

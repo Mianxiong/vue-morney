@@ -12,7 +12,9 @@
       />
     </div>
 
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
+    <Tags @update:value="onUpdateTags"/>
+    <!-- {{ count }}
+    <button @click="add">+1</button> -->
   </Layout>
 </template>
 
@@ -22,7 +24,7 @@ import Types from "@/components/Money/Types.vue";
 import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component, Vue } from "vue-property-decorator";
-import store from '@/store/index2';
+import store from "@/store/index2";
 
 const version = window.localStorage.getItem("version") || "0";
 // const recordList = recordListModel.fetch();
@@ -48,24 +50,33 @@ const version = window.localStorage.getItem("version") || "0";
 
 @Component({
   components: { NumberPad, Types, FormItem, Tags },
+  computed: {
+    count() {
+      return store.count;
+    },
+    recordList() {
+      return store.recordList;
+    },
+  },
 })
 export default class Money extends Vue {
-  tags = store.tagList;
-  recordList = store.recordList;
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 10,
   };
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
-  }
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
   saveRecord() {
     store.createRecord(this.record);
+  }
+  onUpdateTags(value: string[]) {
+    this.record.tags = value;
+  }
+  add() {
+    store.addCount();
   }
   // @Watch("recordList")
   // onRecordListChange() {
