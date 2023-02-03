@@ -50,13 +50,11 @@ const version = window.localStorage.getItem("version") || "0";
 
 @Component({
   components: { NumberPad, Types, FormItem, Tags },
-  computed: {
-    count() {
-      return this.$store.state.recordList;
-    },
-  },
 })
 export default class Money extends Vue {
+  get recordList() {
+    return this.$store.state.recordList;
+  }
   record: RecordItem = {
     tags: [],
     notes: "",
@@ -64,14 +62,14 @@ export default class Money extends Vue {
     amount: 10,
   };
   created() {
-    this.$store.commit('fetchRecords')
+    this.$store.commit("fetchRecords");
   }
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
   saveRecord() {
     // oldStore.createRecord(this.record);
-    this.$store.commit('createRecord', this.record);
+    this.$store.commit("createRecord", this.record);
   }
   onUpdateTags(value: string[]) {
     this.record.tags = value;
