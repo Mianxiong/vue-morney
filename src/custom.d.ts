@@ -1,5 +1,5 @@
 type RecordItem = {
-  tags: Tag[];
+  tags: string[];
   notes: string;
   type: string;
   amount: number; //数据类型 object | string
