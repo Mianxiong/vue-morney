@@ -96,7 +96,8 @@ export default class Money extends Vue {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
@@ -104,9 +105,4 @@ export default class Money extends Vue {
 .notes {
   padding: 12px 0;
 }
-</style>
-
-<style lang="scss" scoped>
-@import "~@/assets/style/helper.scss";
-
 </style>
