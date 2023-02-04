@@ -3,7 +3,8 @@
   <Layout class-prefix="layout">
     {{ record }}
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <Types :value.sync="record.type" />
+    <!-- <Types :value.sync="record.type" /> -->
+    <Tabs :data-source="recordTypeList" :value.sync="record.type"/>
     <div class="notes">
       <FormItem
         field-name="备注"
@@ -25,6 +26,8 @@ import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component, Vue } from "vue-property-decorator";
 import store from "@/store/index";
+import recordTypeList from '@/constants/recordTypeList'
+import Tabs from '../components/Tabs.vue';
 
 const version = window.localStorage.getItem("version") || "0";
 // const recordList = recordListModel.fetch();
@@ -49,12 +52,13 @@ const version = window.localStorage.getItem("version") || "0";
 // };
 
 @Component({
-  components: { NumberPad, Types, FormItem, Tags },
+  components: { NumberPad, Types, FormItem, Tags, Tabs },
 })
 export default class Money extends Vue {
   get recordList() {
     return this.$store.state.recordList;
   }
+  recordTypeList = recordTypeList;
   record: RecordItem = {
     tags: [],
     notes: "",
@@ -104,4 +108,5 @@ export default class Money extends Vue {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+
 </style>
