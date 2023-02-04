@@ -1,18 +1,18 @@
-
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <!-- <Types :value.sync="record.type" /> -->
-    <Tabs :data-source="recordTypeList" :value.sync="record.type"/>
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
     <div class="notes">
       <FormItem
         field-name="备注"
         placeholder="在这里输入备注"
-        @update:value="onUpdateNotes"
+        :value.sync="record.notes"     
       />
     </div>
-
-    <Tags @update:value="onUpdateTags" />
+    <!-- @update:value="onUpdateNotes" -->
+    <!-- <Tags @update:value="onUpdateTags" /> -->
+    <Tags @update:value="record.tags = $event" />
     <!-- {{ count }}
     <button @click="$store.commit('increment', 1)">+1</button> -->
   </Layout>
@@ -25,8 +25,8 @@ import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component, Vue } from "vue-property-decorator";
 import store from "@/store/index";
-import recordTypeList from '@/constants/recordTypeList'
-import Tabs from '../components/Tabs.vue';
+import recordTypeList from "@/constants/recordTypeList";
+import Tabs from "../components/Tabs.vue";
 
 const version = window.localStorage.getItem("version") || "0";
 // const recordList = recordListModel.fetch();
@@ -71,8 +71,15 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() {
+    if (!this.record.tags || this.record.tags.length === 0) {
+      return window.alert("请至少选择一个标签");
+    }
     // oldStore.createRecord(this.record);
     this.$store.commit("createRecord", this.record);
+    if (this.$store.state.createRecordError === null) {
+      window.alert("已保存");
+      this.record.notes = "";
+    }
   }
   onUpdateTags(value: string[]) {
     this.record.tags = value;
@@ -93,7 +100,6 @@ export default class Money extends Vue {
   // }
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";

@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <Types
+    <Tabs
       class-prefix="type"
       :data-source="recordTypeList"
       :value.sync="type"
@@ -8,7 +8,7 @@
 
     <!-- value.sync value会自动赋值，自动接受update事件 -->
 
-    <ol>
+    <ol v-if="groupedList.length>0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">{{ beautify(group.title) }} <span>￥{{group.total}}</span></h3>
         <ol>
@@ -20,6 +20,7 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">目前没有相关记录</div>
   </Layout>
 </template>
 
@@ -42,7 +43,7 @@ const oneDay = 86400 * 1000;
 })
 export default class Statistics extends Vue {
   tagString(tags: Tag[]) {
-    return tags.length === 0 ? "无" : tags.join(",");
+    return tags.length === 0 ? "无" : tags.map(t=>t.name).join("，");
   }
   beautify(string: string) {
     const day = dayjs(string);
@@ -84,15 +85,15 @@ export default class Statistics extends Vue {
   }
   get groupedList() {
     const { recordList } = this;
-    if (recordList.length === 0) {
-      return [];
-    }
     // type Items = RecordItem[];
     // type HashTableValue = { title: string; items: RecordItem };
     // const hashTable :{title:string,items: RecordItem[]}[];
     const newList = clone(recordList).filter(r=>r.type === this.type).sort(
       (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
     );
+    if (newList.length === 0) {
+      return [];
+    }
     type Result = {title: string, total?: number, items:RecordItem[]}[]
     const result:Result = [
       {
@@ -137,11 +138,15 @@ export default class Statistics extends Vue {
   type = "-";
   // interval = "day";
   // intervalList = intervalList;
-  // recordTypeList = recordTypeList;
+  recordTypeList = recordTypeList;
 }
 </script>
 
 <style lang="scss" scoped>
+.noResult{
+  padding: 16px;
+  text-align: center;
+}
 ::v-deep {
   .type-tabs-item {
     background: #c4c4c4;
